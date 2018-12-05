@@ -3,13 +3,14 @@ import Sequelize from 'sequelize'
 const sequelize = new Sequelize('slack', 'postgres', 'postgres', {
   host: 'localhost',
   dialect: 'postgres',
-  define: {
-    underscord: true
-  },
+  operatorsAliases: false,
   pool: {
     max: 5,
     min: 0,
     idle: 10000
+  },
+  define: {
+    underscord: true
   }
 });
 
