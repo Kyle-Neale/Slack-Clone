@@ -12,11 +12,17 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: () => {
-    return { models }
-  } });
+    return {
+      models,
+      user: {
+        id: 1
+      }
+    }
+  }
+});
 
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({ force: true }).then(() => {
   server.listen().then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
   });
