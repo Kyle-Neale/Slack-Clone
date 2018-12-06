@@ -1,12 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './routes';
+import Pages from './pages';
 import * as serviceWorker from './serviceWorker';
 
-const App = <Routes />;
+import { ApolloProvider } from 'react-apollo'
+import { ApolloClient } from 'apollo-boost';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
+const cache = new InMemoryCache()
+
+const client =  new ApolloClient({
+  cache,
+  link: new HttpLink({
+    uri: 'http://localhost:4000'
+  })
+});
+
+const App = () => (
+  <ApolloProvider client={client}>
+    <Pages />;
+  </ApolloProvider>
+);
 
 ReactDOM.render(
-  App,
+  <App />,
   document.getElementById('root')
 );
 

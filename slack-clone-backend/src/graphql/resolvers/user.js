@@ -1,10 +1,10 @@
 export default {
 
   Query: {
-    getUserById: (parent, { id }, { models }, info) => models.User.findOne({ where: { id } }),
-    allUsers: (parent, args, { models }, info) => models.User.findAll()
+    getUserById: async (parent, { id }, { models }, info) => await models.User.findOne({ where: { id } }),
+    allUsers: async (parent, args, { models }, info) => await models.User.findAll()
   },
   Mutation: {
-    createUser: (parent, args, { models }, info) => models.User.create(args)
+    createUser: async (parent, args, { models }, info) => await models.User.create(args)
   }
 }
