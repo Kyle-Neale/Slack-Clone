@@ -4,7 +4,8 @@ export default {
       try {
         let res = await models.Channel.create(args)
         return true;
-      } catch (e) {
+      } catch (err) {
+        console.log(err);
         return false;
       }
     }
