@@ -11,7 +11,7 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/reso
 const server = new ApolloServer({ typeDefs, resolvers });
 
 
-models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync().then(() => {
   server.listen().then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
   });

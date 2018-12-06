@@ -3,6 +3,7 @@ import Sequelize from 'sequelize'
 const sequelize = new Sequelize('slack', 'postgres', 'postgres', {
   host: 'localhost',
   dialect: 'postgres',
+  // Added operatorsAliases in order to prevent the symbolize error from showing up.
   operatorsAliases: false,
   pool: {
     max: 5,
