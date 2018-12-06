@@ -5,8 +5,6 @@ export default {
     allUsers: (parent, args, { models }, info) => models.User.findAll()
   },
   Mutation: {
-    createUser: (parent, args, { models }, info) => {
-      return models.User.create(args)
-    }
+    createUser: (parent, args, { models }, info) => models.User.create(args)
   }
 }
