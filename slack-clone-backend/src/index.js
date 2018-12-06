@@ -8,7 +8,12 @@ const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema'))
 
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/resolvers')));
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: () => {
+    return { models }
+  } });
 
 
 models.sequelize.sync().then(() => {

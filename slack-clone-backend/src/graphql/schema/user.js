@@ -8,7 +8,7 @@ export default `
   }
 
   type Query {
-    getUser(id: Int!): User!
+    getUserById(id: Int!): User!
     allUsers(id: Int!): [User!]!
   }
 
