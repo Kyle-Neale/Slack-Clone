@@ -18,18 +18,18 @@ const Home = () => {
       {({ loading, error, data }) => {
         if (loading) {
           return <p>Loading...</p>;
-          };
-          if (error) {
-            return <p>Error :(</p>;
-            };
-            return (
-              <Fragment>
-                {
-                  data.allUsers.map(user => <h1 key={user.id}>{user.email}</h1>)
-                }
-              </Fragment>
-            )
-          }}
+        };
+        if (error) {
+          return <p>Error :(</p>;
+        };
+        return (
+          <Fragment>
+            {
+              data.allUsers.map(user => <h1 key={user.id}>{user.email}</h1>)
+            }
+          </Fragment>
+        )
+      }}
     </Query>
   )
 };
