@@ -16,16 +16,6 @@ export default function Login() {
       {client => (
         <Mutation mutation={REGISTER_USER}>
           {(registerUser, { loading, error }) => {
-            // this loading state will probably never show, but it's helpful to
-            // have for testing
-            if (loading) {
-              console.log(loading);
-              return <p>Loading...</p>;
-            }
-            if (error) {
-              console.log(error);
-              return <p>An error occurred</p>;
-            }
             return <RegisterForm registerUser={registerUser} />;
           }
         }

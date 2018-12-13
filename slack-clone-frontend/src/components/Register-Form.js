@@ -12,15 +12,17 @@ export default class RegisterForm extends Component {
   }
 
   handleChange = (e) => {
+    console.log(this.props);
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
   handleSubmit = async () => {
-    const response = await  this.props.registerUser({
-      variables: this.state
+    const response = await this.props.registerUser({
+      variables: {...this.state}
     });
+    console.log(response);
   }
 
   render() {

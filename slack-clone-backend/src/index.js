@@ -22,7 +22,7 @@ const server = new ApolloServer({
 });
 
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({force: true}).then(() => {
   server.listen().then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
   });
