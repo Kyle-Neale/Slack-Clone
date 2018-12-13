@@ -12,7 +12,6 @@ export default class RegisterForm extends Component {
   }
 
   handleChange = (e) => {
-    console.log(this.props);
     this.setState({
       [e.target.name]: e.target.value
     });
