@@ -6,7 +6,13 @@ import RegisterForm from '../components/Register-Form.js';
 
 export const REGISTER_USER = gql`
   mutation($username: String!, $email: String!, $password: String!) {
-    registerUser(username: $username, email: $email, password: $password)
+    registerUser(username: $username, email: $email, password: $password) {
+      ok
+      errors {
+        path
+        message
+      }
+    }
   }
 `;
 
