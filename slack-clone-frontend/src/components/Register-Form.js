@@ -6,8 +6,12 @@ export default class RegisterForm extends Component {
     super(props)
     this.state = {
       username: '',
+      usernameError: '',
       email: '',
-      password: ''
+      emailError: '',
+      password: '',
+      passwordError: '',
+
     }
   }
 
@@ -21,7 +25,20 @@ export default class RegisterForm extends Component {
     const response = await this.props.registerUser({
       variables: {...this.state}
     });
-    console.log(response);
+
+    const { ok, errors } = response.data.registerUser;
+
+    if (ok) {
+      this.props.history.push('/');
+    } else {
+      const err = {};
+      errors.forEach(({path, message}) => {
+        err[`${path}Error`] = message
+      });
+
+      this.setState(err);
+    }
+    console.log(response)
   }
 
   render() {
