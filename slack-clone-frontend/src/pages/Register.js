@@ -16,7 +16,7 @@ export const REGISTER_USER = gql`
   }
 `;
 
-export default function Login() {
+export default function Register() {
   return (
     <ApolloConsumer>
       {client => (
