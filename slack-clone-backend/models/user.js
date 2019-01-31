@@ -16,7 +16,7 @@ export default (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
       validate: {
         isEmail: {
           args: true,
@@ -25,10 +25,12 @@ export default (sequelize, DataTypes) => {
       }
     },
     password: {
-      type: DataTypes.STRING},
+      type: DataTypes.STRING,
       validates: {
-        len: [6, 16]
+        len: [6, 16],
+        msg: 'The password needs to be between 6-16 characters long.'
       }
+    }
   });
 
   User.associate = (models) => {
