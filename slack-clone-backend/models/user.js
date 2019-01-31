@@ -24,13 +24,7 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    password: {
-      type: DataTypes.STRING,
-      validates: {
-        len: [6, 16],
-        msg: 'The password needs to be between 6-16 characters long.'
-      }
-    }
+    password: DataTypes.STRING
   });
 
   User.associate = (models) => {

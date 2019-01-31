@@ -3,10 +3,15 @@ import _ from 'lodash';
 
 const formatErrors = (error, models) => {
   if (error instanceof models.sequelize.ValidationError) {
-    return error.errors.map(e => _.pick(x, ['path', message]));
+    return error.errors.map(e => _.pick(e, ['path', message]));
   }
-  return [{path: 'name', message: 'Something went wrong!'}]
-}
+  return [
+    {
+      path: 'name',
+      message: 'Something went wrong!'
+    }
+  ];
+};
 
 export default {
   Query: {
@@ -38,7 +43,7 @@ export default {
         console.log(err);
         return {
           ok: false,
-          errors: formatErrors
+          errors: formatErrors(err, models),
         };
       }
     }
