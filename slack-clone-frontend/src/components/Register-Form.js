@@ -49,7 +49,7 @@ export default class RegisterForm extends Component {
   }
 
   render() {
-    const { usernameError, passwordError, emailError } = this.state;
+    const { usernameError, passwordError, emailError, username, password, email } = this.state;
 
     const errorList = [];
 
@@ -65,7 +65,7 @@ export default class RegisterForm extends Component {
 
 
     return (
-      <div className='login-form'>
+      <div className='register-form'>
         {/*
           Heads up! The styles below are necessary for the correct render of this example.
           You can do same with CSS, the main idea is that all the elements up to the `Grid`
@@ -86,14 +86,14 @@ export default class RegisterForm extends Component {
             <Form size='large' onSubmit={this.handleSubmit} >
               <Segment stacked>
                 <Form.Input error={!!usernameError} fluid icon='user' name='username' iconPosition='left' placeholder='Username'
-                  onChange={this.handleChange}
+                  onChange={this.handleChange} value={username}
                   />
                 <Form.Input  error={!!emailError} fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
-                  onChange={this.handleChange}
+                  onChange={this.handleChange} value={email}
                   />
                 <Form.Input
                   error={!!passwordError} fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleChange} value={password}
                 />
 
                 <Button color='teal' fluid size='large' >
