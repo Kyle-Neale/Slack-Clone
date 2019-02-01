@@ -19,8 +19,20 @@ export default observer(class LoginForm extends React.Component {
 
   }
 
-  handleSubmit = () => {
-    console.log(this);
+  handleSubmit = async () => {
+    const { email, password } = this
+    const response = await this.props.loginUser({
+      variables: { email, password },
+
+    });
+
+    const { ok, token, refreshToken } = response.data.loginUser;
+
+    if (ok) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
+
+    }
   }
 
   render() {
@@ -47,11 +59,11 @@ export default observer(class LoginForm extends React.Component {
             <Form size='large' onSubmit={this.handleSubmit} >
               <Segment stacked>
                 <Form.Input fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
-                  onChange={this.handleChange}
+                  onChange={this.handleChange} value={email}
                   />
                 <Form.Input
                   fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleChange} value={password}
                 />
                 <Button color='teal' fluid size='large' >
                   Login
