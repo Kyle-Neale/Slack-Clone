@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import jwt from 'jsonwebtoken';
+import { tryLogin } from '../../auth.js'
 
 const formatErrors = (error, models) => {
   if (error instanceof models.sequelize.ValidationError) {
@@ -19,7 +21,8 @@ export default {
     allUsers: async (parent, args, { models }, info) => await models.User.findAll()
   },
   Mutation: {
-    registerUser: async (parent, {password, ...otherArgs}, { models }, info) => {
+    loginUser: (parent, { email, password }, { models, SECRET, SECRET2 }) => tryLogin(email, password, models, SECRET, SECRET2),
+    registerUser: async (parent, { password, ...otherArgs }, { models }, info) => {
       try {
         if (password.length < 5 || password.length > 25) {
           return {
@@ -47,5 +50,6 @@ export default {
         };
       }
     }
+
   }
 }
