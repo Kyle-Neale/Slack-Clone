@@ -16,13 +16,14 @@ export const REGISTER_USER = gql`
   }
 `;
 
-export default function Register() {
+export default function Register(props) {
+  
   return (
     <ApolloConsumer>
       {client => (
         <Mutation mutation={REGISTER_USER}>
           {(registerUser, { loading, error }) => {
-            return <RegisterForm registerUser={registerUser} />;
+            return <RegisterForm {...props} registerUser={registerUser} />;
           }
         }
         </Mutation>

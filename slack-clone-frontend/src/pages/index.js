@@ -1,18 +1,21 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
+import createBrowserHistory from "history/createBrowserHistory";
 import Home from './Home'
 import Register from './Register'
 import Login from './Login'
 
+const history = createBrowserHistory()
+
 const Pages = () => {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
-        <Route path="/" exact component={Home}/>
-        <Route path="/register" exact component={Register}/>
-        <Route path="/login" exact component={Login}/>
+        <Route path="/" exact render={(routerProps) => <Home {...routerProps} />}/>
+        <Route path="/register" exact render={(routerProps) => <Register {...routerProps} />}/>
+        <Route path="/login" exact render={(routerProps) => <Login {...routerProps} />}/>
       </Switch>
-    </BrowserRouter>
+    </Router>
   )
 }
 

@@ -18,14 +18,14 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export default function Login() {
+export default function Login(props) {
   return (
     <ApolloConsumer>
       {client => (
         <Mutation mutation={LOGIN_USER}>
           {
             (loginUser, { loading, error }) => {
-            return <LoginForm loginUser={loginUser} />;
+            return <LoginForm {...props} loginUser={loginUser} />;
           }
         }
         </Mutation>

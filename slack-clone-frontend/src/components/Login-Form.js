@@ -11,6 +11,9 @@ export default observer(class LoginForm extends React.Component {
     extendObservable(this, {
       email: '',
       password: '',
+      errors: {
+
+      }
     });
   }
 
@@ -26,24 +29,37 @@ export default observer(class LoginForm extends React.Component {
 
     });
 
-    const { ok, token, refreshToken } = response.data.loginUser;
+    const { ok, token, refreshToken, errors } = response.data.loginUser;
 
     if (ok) {
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
+      
+      this.props.history.push('/');
 
+    } else {
+      const errs = {};
+      errors.forEach(({ path, message }) => {
+        errs[`${path}Error`] = message;
+      });
+
+      this.errors = errs;
     }
   }
 
   render() {
-    const { email, password } = this
+    const { email, password, errors: { emailError, passwordError } } = this;
+    const errorList = [];
+
+    if (passwordError) {
+      errorList.push(passwordError);
+    }
+    if (emailError) {
+      errorList.push(emailError);
+    }
+
     return (
       <div className='login-form'>
-        {/*
-          Heads up! The styles below are necessary for the correct render of this example.
-          You can do same with CSS, the main idea is that all the elements up to the `Grid`
-          below must have a height of 100%.
-        */}
         <style>{`
           body > div,
           body > div > div,
@@ -60,16 +76,27 @@ export default observer(class LoginForm extends React.Component {
               <Segment stacked>
                 <Form.Input fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
                   onChange={this.handleChange} value={email}
+                  error={!!emailError}
                   />
                 <Form.Input
                   fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
                   onChange={this.handleChange} value={password}
+                  error={!!passwordError}
                 />
                 <Button color='teal' fluid size='large' >
                   Login
                 </Button>
+
+                {(errorList.length) ?
+                  (<Message>
+                    <Message.Header>There were some errors with your submission!</Message.Header>
+                    <Message.List items={errorList} />
+                  </Message>) : null}
               </Segment>
             </Form>
+            <Message>
+              New to us? <a href='/register'>Signup</a>
+            </Message>
           </Grid.Column>
         </Grid>
       </div>

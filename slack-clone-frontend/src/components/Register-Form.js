@@ -37,6 +37,7 @@ export default class RegisterForm extends Component {
 
     if (ok) {
       this.props.history.push('/');
+      
     } else {
       const err = {};
       errors.forEach(({path, message}) => {
@@ -66,11 +67,6 @@ export default class RegisterForm extends Component {
 
     return (
       <div className='register-form'>
-        {/*
-          Heads up! The styles below are necessary for the correct render of this example.
-          You can do same with CSS, the main idea is that all the elements up to the `Grid`
-          below must have a height of 100%.
-        */}
         <style>{`
           body > div,
           body > div > div,
@@ -99,13 +95,16 @@ export default class RegisterForm extends Component {
                 <Button color='teal' fluid size='large' >
                   Sign Up!
                 </Button>
-                {(usernameError || emailError || passwordError) ?
+                {(errorList.length) ?
                   (<Message>
                     <Message.Header>There were some errors with your submission!</Message.Header>
                     <Message.List items={errorList} />
                   </Message>) : null}
               </Segment>
             </Form>
+            <Message>
+              Already have an account? <a href='/login'> Login </a>
+            </Message>
           </Grid.Column>
         </Grid>
       </div>

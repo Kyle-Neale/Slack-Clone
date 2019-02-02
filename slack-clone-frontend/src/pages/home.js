@@ -12,7 +12,7 @@ const GET_ALL_USERS = gql`
   }
 `;
 
-const Home = () => {
+const Home = (props) => {
   return (
     <Query query={GET_ALL_USERS}>
       {({ loading, error, data }) => {
