@@ -3,7 +3,7 @@ import _ from 'lodash';
 import jwt from 'jsonwebtoken';
 import { tryLogin } from '../../auth.js'
 
-const formatErrors = (error, models) => {
+export const formatErrors = (error, models) => {
   if (error instanceof models.sequelize.ValidationError) {
     return error.errors.map(e => _.pick(e, ['path', 'message']));
   }

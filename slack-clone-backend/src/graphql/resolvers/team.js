@@ -1,13 +1,19 @@
-export default {
+import formatErrors from './user.js'
 
+export default {
   Mutation: {
     createTeam: async (parent, args, { models, user }, info ) => {
       try {
         await models.Team.create({ ...args, owner: user.id});
-        return true;
+        return {
+          ok: true
+        };
       } catch (err) {
         console.log(err);
-        return false;
+        return {
+          ok: false,
+          errors: formatErrors(errors)
+        };
       }
     }
   }
