@@ -1,62 +1,56 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { extendObservable } from 'mobx';
+import { observer } from 'mobx-react';
+
 import { Message, Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
-export default class RegisterForm extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      username: '',
-      usernameError: '',
-      email: '',
-      emailError: '',
-      password: '',
-      passwordError: '',
+class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
 
-    }
+    extendObservable(this, {
+      email: '',
+      password: '',
+      errors: {
+
+      }
+    });
   }
 
   handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this[e.target.name] = e.target.value
+
   }
 
   handleSubmit = async () => {
+    const { email, password } = this
+    const response = await this.props.loginUser({
+      variables: { email, password },
 
-    this.setState({
-      usernameError: '',
-      passwordError: '',
-      emailError: '',
     });
 
-    const response = await this.props.registerUser({
-      variables: {...this.state}
-    });
-
-    const { ok, errors } = response.data.registerUser;
+    const { ok, token, refreshToken, errors } = response.data.loginUser;
 
     if (ok) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
+
       this.props.history.push('/');
-      
+
     } else {
-      const err = {};
-      errors.forEach(({path, message}) => {
-        err[`${path}Error`] = message
+      const errs = {};
+      errors.forEach(({ path, message }) => {
+        errs[`${path}Error`] = message;
       });
 
-      this.setState(err);
+      this.errors = errs;
     }
-    console.log(response)
   }
 
   render() {
-    const { usernameError, passwordError, emailError, username, password, email } = this.state;
-
+    const { email, password, errors: { emailError, passwordError } } = this;
     const errorList = [];
 
-    if (usernameError) {
-      errorList.push(usernameError);
-    }
     if (passwordError) {
       errorList.push(passwordError);
     }
@@ -64,9 +58,8 @@ export default class RegisterForm extends Component {
       errorList.push(emailError);
     }
 
-
     return (
-      <div className='register-form'>
+      <div className='login-form'>
         <style>{`
           body > div,
           body > div > div,
@@ -77,24 +70,23 @@ export default class RegisterForm extends Component {
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as='h2' color='teal' textAlign='center'>
-               Sign up for an account!
+               Login to your account!
             </Header>
             <Form size='large' onSubmit={this.handleSubmit} >
               <Segment stacked>
-                <Form.Input error={!!usernameError} fluid icon='user' name='username' iconPosition='left' placeholder='Username'
-                  onChange={this.handleChange} value={username}
-                  />
-                <Form.Input  error={!!emailError} fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
+                <Form.Input fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
                   onChange={this.handleChange} value={email}
+                  error={!!emailError}
                   />
                 <Form.Input
-                  error={!!passwordError} fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
+                  fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
                   onChange={this.handleChange} value={password}
+                  error={!!passwordError}
                 />
-
                 <Button color='teal' fluid size='large' >
-                  Sign Up!
+                  Login
                 </Button>
+
                 {(errorList.length) ?
                   (<Message>
                     <Message.Header>There were some errors with your submission!</Message.Header>
@@ -103,11 +95,13 @@ export default class RegisterForm extends Component {
               </Segment>
             </Form>
             <Message>
-              Already have an account? <a href='/login'> Login </a>
+              New to us? <a href='/register'>Signup</a>
             </Message>
           </Grid.Column>
         </Grid>
       </div>
-    )
+    );
   }
-}
+};
+
+export default observer(LoginForm);

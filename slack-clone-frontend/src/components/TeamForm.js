@@ -4,13 +4,12 @@ import { observer } from 'mobx-react';
 
 import { Message, Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
-export default observer(class LoginForm extends React.Component {
+class TeamForm extends React.Component {
   constructor(props) {
     super(props);
 
     extendObservable(this, {
-      email: '',
-      password: '',
+      name: '',
       errors: {
 
       }
@@ -23,18 +22,15 @@ export default observer(class LoginForm extends React.Component {
   }
 
   handleSubmit = async () => {
-    const { email, password } = this
-    const response = await this.props.loginUser({
-      variables: { email, password },
+    const { name } = this
+    const response = await this.props.createTeam({
+      variables: { name },
 
     });
 
-    const { ok, token, refreshToken, errors } = response.data.loginUser;
+    const { ok, errors } = response.data.createUser;
 
     if (ok) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
-      
       this.props.history.push('/');
 
     } else {
@@ -48,15 +44,13 @@ export default observer(class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, password, errors: { emailError, passwordError } } = this;
+    const { name, errors: { nameError } } = this;
     const errorList = [];
 
-    if (passwordError) {
-      errorList.push(passwordError);
+    if (nameError) {
+      errorList.push(nameError);
     }
-    if (emailError) {
-      errorList.push(emailError);
-    }
+
 
     return (
       <div className='login-form'>
@@ -70,21 +64,16 @@ export default observer(class LoginForm extends React.Component {
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as='h2' color='teal' textAlign='center'>
-               Login to your account!
+               Create A Team!
             </Header>
             <Form size='large' onSubmit={this.handleSubmit} >
               <Segment stacked>
-                <Form.Input fluid icon='user' name='email' iconPosition='left' placeholder='E-mail'
-                  onChange={this.handleChange} value={email}
-                  error={!!emailError}
+                <Form.Input fluid icon='user' name='name' iconPosition='left' placeholder='Name'
+                  onChange={this.handleChange} value={name}
+                  error={!!nameError}
                   />
-                <Form.Input
-                  fluid icon='lock' iconPosition='left' placeholder='Password' type='password' name='password'
-                  onChange={this.handleChange} value={password}
-                  error={!!passwordError}
-                />
                 <Button color='teal' fluid size='large' >
-                  Login
+                  Submit
                 </Button>
 
                 {(errorList.length) ?
@@ -102,4 +91,6 @@ export default observer(class LoginForm extends React.Component {
       </div>
     );
   }
-});
+};
+
+export default observer(TeamForm);

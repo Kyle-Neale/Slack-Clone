@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import RegisterForm from '../components/Register-Form.js';
+import RegisterForm from '../components/RegisterForm.js';
 
 export const REGISTER_USER = gql`
   mutation($username: String!, $email: String!, $password: String!) {
@@ -17,7 +17,7 @@ export const REGISTER_USER = gql`
 `;
 
 export default function Register(props) {
-  
+
   return (
     <ApolloConsumer>
       {client => (

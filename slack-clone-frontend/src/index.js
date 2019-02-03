@@ -3,20 +3,54 @@ import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css'
 import Pages from './pages';
 import * as serviceWorker from './serviceWorker';
+// import jwt from 'jsonwebtoken';
 
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from 'react-apollo';
+import { ApolloLink } from 'apollo-link'
 import { ApolloClient } from 'apollo-boost';
-import { HttpLink } from 'apollo-link-http';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache();
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000'
+});
+
+const authLink = setContext(() => ({
+  headers: {
+    "x-token": localStorage.getItem('token'),
+    'x-refreshToken': localStorage.getItem('refreshToken')
+  }
+}));
+
+const afterwareLink = new ApolloLink((operation, forward) => {
+  const { headers } = operation.getContext();
+
+  if (headers) {
+    const token = headers.get('x-token');
+    const refreshToken = headers.get('x-refresh-token');
+
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+  }
+
+  return forward(operation);
+});
+
+const link = afterwareLink.concat(authLink.concat(httpLink));
 
 const client =  new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'http://localhost:4000'
-  })
+  link,
 });
+
+
 
 const App = () => (
   <ApolloProvider client={client}>
