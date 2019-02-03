@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css'
 import Pages from './pages';
 import * as serviceWorker from './serviceWorker';
-// import jwt from 'jsonwebtoken';
 
 import { ApolloProvider } from 'react-apollo';
 import { ApolloLink } from 'apollo-link'
@@ -14,7 +13,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const cache = new InMemoryCache();
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
+  uri: 'http://localhost:4000/graphql'
 });
 
 const authLink = setContext(() => ({
